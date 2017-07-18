@@ -84,13 +84,17 @@ var (
 	typeMap TypeMap
 )
 
-// NewClient allocates and initializes a Contrail API client.
-//
+// NewClient allocates and initializes a Contrail API client with default http client.
 func NewClient(server string, port int) *Client {
+	return NewClientWithHTTPClient(server, port, http.DefaultClient)
+}
+
+// NewClientWithHttpClient allows to create contrail client with custom http client.
+func NewClientWithHTTPClient(server string, port int, httpClient *http.Client) *Client {
 	client := new(Client)
 	client.server = server
 	client.port = port
-	client.httpClient = &http.Client{}
+	client.httpClient = httpClient
 	client.auth = new(NopAuthenticator)
 	return client
 }
